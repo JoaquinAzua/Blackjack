@@ -10,32 +10,35 @@
     <title>Blackjack</title>
 </head>
 <body>
-    <h1>Let's Play Blackjack!</h1>
-    <div>
-        <h2>Game Result: </h2>
-        <button>New Game</button>
+    <div id="table">
+        <h1>Let's Play Blackjack!</h1>
+        <div id="gameStatus">
+            <h2 id="label">Game Status: </h2>
+            
+        </div>
+        <main> 
+            <!-- <button>New Game</button> -->
+            <section>
+                <h2 id="label">Dealer's Hand:</h2>
+                <picture id="dealersCards">card pic</picture>
+            </section>
+            <span id="bets">
+                <button id="hit">Hit</button>
+                <button id="stay">Stay</button>
+                <button class="betButtons" id="decreaseBet">-25</button>
+                <h3 id="label">Total bet:</h3>
+                <button class="betButtons" id="increaseBet">+25</button>
+            </span>
+            <section id="playersHand">
+                <h2 id="label">Players Hand:</h2>
+                <picture id="playersCards">card pic</picture>
+            </section>
+        </main>
+        <div>
+            <h2 id="winLossCount">Wins: Ties: Losses:</h2>
+        </div>
     </div>
-    <main> 
-        <section>
-            <h2>Dealer's Hand:</h2>
-            <picture>card pic</picture>
-        </section>
-        <button>Hit</button>
-        <button>Stay</button>
-        <span>
-            <h3>Total bet</h3>
-            <button>-25</button>
-            <button>+25</button>
-        </span>
-        <section>
-            <h2>Players Hand:</h2>
-            <picture>card pic</picture>
-        </section>
-    </main>
-    <div>
-        <h2>Wins: Ties: Losses:</h2>
-    </div>
-
+        
     
 </body>
 </html>
