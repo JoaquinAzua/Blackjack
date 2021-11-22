@@ -7,10 +7,13 @@ const masterDeck = buildMasterDeck();
 let cards, handvalue, gameStatus, tracker,contestants, shuffledDeck;
 
 /*----- cached element references -----*/
-
+const dealerHand = document.getElementById("dealersCards");
+const playerHand = document.getElementById("playersCards");
+const status = document.getElementById("gSLabel");
+const 
 
 /*----- event listeners -----*/
-
+document.querySelector('button').addEventListener('click', )
 
 /*----- functions -----*/
 init();
@@ -32,9 +35,30 @@ function init() {
 };
 
 function render() {
-let cardTemplate = `<picture id="dealersCards ${player.cards[0].face}"></picture>`;
+let cardTemplate = `<picture id="dealersCards ${cards[0].face}"></picture>`;
 pictureEl.innerHTML = cardTemplate;
 }
+
+
+function dealInitialHands() {
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function buildMasterDeck() {
     const deck = [];

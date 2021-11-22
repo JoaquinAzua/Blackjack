@@ -16,11 +16,19 @@ section {
     margin: auto;
     background-color: beige;
 }
-#label {
+#gSLabel {
     color:firebrick;
     text-transform: uppercase;
     width: 550px;
-    margin: 10px 10px 10px 10px;
+    height: 35px;
+    margin: auto;
+    background-color: orange;
+} 
+#dHLabel, #pHLabel {
+    color:firebrick;
+    text-transform: uppercase;
+    width: 550px;
+    margin: 10px;
 }
 #gameStatus {
     background-color: lightblue;
@@ -28,7 +36,7 @@ section {
     height: 60px;
     margin: auto;
 }
-#winTracker {
+footer {
     width: 550px;
     height: 50px;
     margin: auto;
@@ -37,11 +45,12 @@ section {
     background-color: blue;
     border-color: firebrick;
 }
-#bets {
+.betting,  {
     width: 550px;
-    height: 50px;
+    height: 35px;
+    text-align: center;
     margin: auto;
-    background-color: blue;
+    background-color: rgb(255, 0, 200);
 }
 
 #hitStay{
@@ -52,7 +61,6 @@ section {
 }
 
 .betButtons {
-
     background-color: yellow;
 }
 

@@ -12,34 +12,37 @@
 <body>
     <div id="table">
         <h1>B l a c k j a c k !</h1>
-        <div id="gameStatus">
-            <h2 id="label"></h2>
-        </div>
+        <div id="gSLabel">Game Status:</div>
         <main> 
-            <!-- <button>New Game</button> -->
             <section>
-                <h2 id="label">Dealer's Hand:</h2>
-                <picture id="dealersCards"></picture>
+                <h2 id="dHLabel">Dealer's Hand:</h2>
+                <div id="dealerHand" class="hand"></div>
             </section>
             <div id="hitStay"> 
                 <button id="hit">Hit</button>
                 <button id="stay">Stay</button>
+                <button id="deal">Deal</button>
             </div>
-            <section id="playersHand">
-                <h2 id="label">Players Hand:</h2>
-                <picture id="playersCards">card pic</picture>
+            <section>
+                <h2 id="pHLabel">Players Hand:</h2>
+                <div id="playerHand" class="hand">card pic</div>
             </section>
-            <span id="bets">
-                <h3>Total bet:</h3>
-                <button class="betButtons" id="decreaseBet">-25</button>
-                <button class="betButtons" id="increaseBet">+25</button>
-            </span>
+                <!-- <div class="betting">
+                    <div class="betArea">
+                        <p>Bet</p>
+                        <p id="bet">$0</p>
+                    </div>
+                    <button class="betButtons" id="decreaseBet">-25</button>
+                    <button class="betButtons" id="increaseBet">+25</button>
+                    <div class="potArea">
+                        <p>Amount Left:</p>
+                        <p id="pot">$500</p>
+                    </div>
+                </div> -->
         </main>
-        <div id="winTracker">
+        <!-- <footer id="winTracker">
             <h2 id="winLossCount">Wins: Ties: Losses:</h2>
-        </div>
+        </footer> -->
     </div>
-        
-    
 </body>
 </html>
