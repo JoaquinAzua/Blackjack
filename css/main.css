@@ -6,15 +6,8 @@ h1 {
     margin: auto;
     height: 650px;
     width: 800px;
-    background-color: rgba(4, 163, 4, 0.959);
+    background-color: #53AE8D;
     border-radius: 40px;
-}
-
-section {
-    width: 550px;
-    height: 160px;
-    margin: auto;
-    background-color: beige;
 }
 #gSLabel {
     color:firebrick;
@@ -24,11 +17,20 @@ section {
     margin: auto;
     background-color: orange;
 } 
+#dealerHand, #playerHand {
+    width: 550px;
+    height: 160px;
+    margin: auto;
+    background-color: beige;
+    
+}
 #dHLabel, #pHLabel {
+    display: block;
     color:firebrick;
     text-transform: uppercase;
+    text-align: left;
     width: 550px;
-    margin: 10px;
+    margin: 10px auto 10px;
 }
 #gameStatus {
     background-color: lightblue;
@@ -45,21 +47,28 @@ footer {
     background-color: blue;
     border-color: firebrick;
 }
-.betting,  {
+
+#hitStay button{
+    width: 150px;
+    height: 30px;
+    margin: auto;
+    text-transform: uppercase;
+}
+
+
+
+
+
+
+
+
+.betting  {
     width: 550px;
     height: 35px;
     text-align: center;
     margin: auto;
     background-color: rgb(255, 0, 200);
 }
-
-#hitStay{
-    width: 550px;
-    height: 30px;
-    margin: auto;
-    background-color: red;
-}
-
 .betButtons {
     background-color: yellow;
 }

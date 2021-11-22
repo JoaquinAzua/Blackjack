@@ -4,43 +4,48 @@ const ranks = ['02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 'Q', '
 const masterDeck = buildMasterDeck();
 
 /*----- app's state (variables) -----*/
-let cards, handvalue, gameStatus, tracker,contestants, shuffledDeck;
+let contestants, shuffledDeck, player, dealer, cards, handValue;
 
 /*----- cached element references -----*/
-const dealerHand = document.getElementById("dealersCards");
-const playerHand = document.getElementById("playersCards");
+const playerHandValue = document.getElementById("pHLabel");
+const dealerHandValue = document.getElementById("dHLabel");
+const dealerHand = document.getElementById("dealerHand");
+const playerHand = document.getElementById("playerhand");
 const status = document.getElementById("gSLabel");
-const 
+
 
 /*----- event listeners -----*/
-document.querySelector('button').addEventListener('click', )
+document.querySelector('#deal').addEventListener('click', initialDeal);
+ document.querySelector('#hit').addEventListener('click', drawNextHand);
+ document.querySelector('#stay').addEventListener('click', );
 
 /*----- functions -----*/
-init();
+init ();
 
-contestants = {
-   player: {
-        cards: [shuffledDeck.pop(), shuffledDeck.pop()],
-        handValue: 0, 
-    },
-    dealer: {
-        cards: [shuffledDeck.pop(),shuffledDeck.pop()],
-        handValue: 0,
-    }
-}
 function init() {
     shuffledDeck = getNewShuffledDeck();
+    contestants = {
+       player: {
+            cards: [],
+            handValue: 0, 
+        },
+        dealer: {
+            cards: [],
+            handValue: 0,
+        }
+    }
 
-    render();
+    renderHands();
 };
 
-function render() {
-let cardTemplate = `<picture id="dealersCards ${cards[0].face}"></picture>`;
-pictureEl.innerHTML = cardTemplate;
+function renderHands() {
 }
 
 
-function dealInitialHands() {
+function initialDeal() {
+
+}
+function drawNextHand() {
 
 }
 
