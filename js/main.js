@@ -8,21 +8,33 @@ let cards, handvalue, gameStatus, tracker,contestants, shuffledDeck;
 
 /*----- cached element references -----*/
 
-/*----- event listeners -----*/
-/*----- functions -----*/
 
-function init() {
-    const contestants = {
-       player: {
-            cards: [shuffledDeck.pop(), shuffledDeck.pop()],
-            handValue: 0, 
-        },
-        dealer: {
-            cards: [shuffledDeck.pop(),shuffledDeck.pop()],
-            handValue: 0,
-        }
+/*----- event listeners -----*/
+
+
+/*----- functions -----*/
+init();
+
+contestants = {
+   player: {
+        cards: [shuffledDeck.pop(), shuffledDeck.pop()],
+        handValue: 0, 
+    },
+    dealer: {
+        cards: [shuffledDeck.pop(),shuffledDeck.pop()],
+        handValue: 0,
     }
+}
+function init() {
+    shuffledDeck = getNewShuffledDeck();
+
+    render();
 };
+
+function render() {
+let cardTemplate = `<picture id="dealersCards ${player.cards[0].face}"></picture>`;
+pictureEl.innerHTML = cardTemplate;
+}
 
 function buildMasterDeck() {
     const deck = [];
@@ -38,4 +50,17 @@ function buildMasterDeck() {
       });
     });
     return deck;
+  }
+
+  function getNewShuffledDeck() {
+    // Create a copy of the masterDeck (leave masterDeck untouched!)
+    const tempDeck = [...masterDeck];
+    const newShuffledDeck = [];
+    while (tempDeck.length) {
+      // Get a random index for a card still in the tempDeck
+      const rndIdx = Math.floor(Math.random() * tempDeck.length);
+      // Note the [0] after splice - this is because splice always returns an array and we just want the card object in that array
+      newShuffledDeck.push(tempDeck.splice(rndIdx, 1)[0]);
+    }
+    return newShuffledDeck;
   }

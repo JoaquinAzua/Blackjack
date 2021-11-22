@@ -4,37 +4,38 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./card-deck-css/css/cardstarter.css">
     <script src="./js/main.js"></script>
-    <link rel="stylesheet" href="./css/styles.css">
-    <link rel="stylesheet" href="./card-deck-css">
     <title>Blackjack</title>
 </head>
 <body>
     <div id="table">
-        <h1>Let's Play Blackjack!</h1>
+        <h1>B l a c k j a c k !</h1>
         <div id="gameStatus">
-            <h2 id="label">Game Status: </h2>
-            
+            <h2 id="label"></h2>
         </div>
         <main> 
             <!-- <button>New Game</button> -->
             <section>
                 <h2 id="label">Dealer's Hand:</h2>
-                <picture id="dealersCards">card pic</picture>
+                <picture id="dealersCards"></picture>
             </section>
-            <span id="bets">
+            <div id="hitStay"> 
                 <button id="hit">Hit</button>
                 <button id="stay">Stay</button>
-                <button class="betButtons" id="decreaseBet">-25</button>
-                <h3 id="label">Total bet:</h3>
-                <button class="betButtons" id="increaseBet">+25</button>
-            </span>
+            </div>
             <section id="playersHand">
                 <h2 id="label">Players Hand:</h2>
                 <picture id="playersCards">card pic</picture>
             </section>
+            <span id="bets">
+                <h3>Total bet:</h3>
+                <button class="betButtons" id="decreaseBet">-25</button>
+                <button class="betButtons" id="increaseBet">+25</button>
+            </span>
         </main>
-        <div>
+        <div id="winTracker">
             <h2 id="winLossCount">Wins: Ties: Losses:</h2>
         </div>
     </div>
