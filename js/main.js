@@ -10,14 +10,14 @@ let contestants, shuffledDeck, player, dealer, cards, handValue;
 const playerHandValue = document.getElementById("pHLabel");
 const dealerHandValue = document.getElementById("dHLabel");
 const dealerHand = document.getElementById("dealerHand");
-const playerHand = document.getElementById("playerhand");
+const playerHand = document.getElementById("playerHand");
 const status = document.getElementById("gSLabel");
 
 
 /*----- event listeners -----*/
-document.querySelector('#deal').addEventListener('click', initialDeal);
- document.querySelector('#hit').addEventListener('click', drawNextHand);
- document.querySelector('#stay').addEventListener('click', );
+ document.querySelector("#deal").addEventListener('click', initialDeal);
+ document.querySelector("#hit").addEventListener('click', drawNextHand);
+ document.querySelector('#stay').addEventListener('click', stay);
 
 /*----- functions -----*/
 init ();
@@ -39,14 +39,25 @@ function init() {
 };
 
 function renderHands() {
+    let cardTemplate = "";
+    contestants.player.cards.forEach(function (card){
+        cardTemplate += `<div class="card ${card.face}"></div>`;
+    });
+    playerHand.innerHTML = cardTemplate;
 }
 
 
-function initialDeal() {
-
+function initialDeal(evt) {
+    contestants.player.cards.push(shuffledDeck.pop(),shuffledDeck.pop());
+    renderHands();
 }
-function drawNextHand() {
 
+function drawNextHand(evt) {
+console.log(evt.target);
+}
+
+function stay(evt) {
+    console.log(evt.target);
 }
 
 

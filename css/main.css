@@ -1,6 +1,12 @@
 h1 {
     text-align: center;
 }
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
 #table {
     margin: auto;
@@ -18,19 +24,23 @@ h1 {
     background-color: orange;
 } 
 #dealerHand, #playerHand {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 550px;
     height: 160px;
-    margin: auto;
+    margin: 5px;
     background-color: beige;
     
 }
 #dHLabel, #pHLabel {
     display: block;
+    /* background-color: blue; */
     color:firebrick;
     text-transform: uppercase;
     text-align: left;
     width: 550px;
-    margin: 10px auto 10px;
+    margin: 5px;
 }
 #gameStatus {
     background-color: lightblue;
@@ -51,7 +61,7 @@ footer {
 #hitStay button{
     width: 150px;
     height: 30px;
-    margin: auto;
+    margin: 10px;
     text-transform: uppercase;
 }
 
