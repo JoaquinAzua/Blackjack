@@ -40,15 +40,16 @@ function init() {
 
 function renderHands() {
     let cardTemplate = "";
-    contestants.player.cards.forEach(function (card){
+    contestants.dealer.cards.forEach(function (card){
         cardTemplate += `<div class="card ${card.face}"></div>`;
     });
-    playerHand.innerHTML = cardTemplate;
+    dealerHand.innerHTML = cardTemplate;
 }
 
 
 function initialDeal(evt) {
-    contestants.player.cards.push(shuffledDeck.pop(),shuffledDeck.pop());
+    contestants.dealer.cards.push(shuffledDeck.pop(),shuffledDeck.pop());
+    
     renderHands();
 }
 
