@@ -37,45 +37,68 @@ function init() {
 
     renderHands();
 };
+function initialDeal(evt) {
+    
+    contestants.player.cards.push(shuffledDeck.pop(), shuffledDeck.pop());
+    contestants.dealer.cards.push(shuffledDeck.pop(), shuffledDeck.pop());
+
+    renderHands();
+    
+}
 
 function renderHands() {
-    let cardTemplate = "";
-    contestants.dealer.cards.forEach(function (card){
-        cardTemplate += `<div class="card ${card.face}"></div>`;
-    });
-    dealerHand.innerHTML = cardTemplate;
+    let dealerCardTemplate = "";
+    let playerCardTemplate = "";
+
+    let dealerSum = contestants.dealer.handValue;
+    let playerSum = contestants.player.handValue;
+
+    if (contestants.dealer.handValue === 0 || contestants.player.handValue ===0 ) {
+        contestants.player.cards.forEach(function (card) {
+            playerCardTemplate += `<div class="card ${card.face}"></div>`;
+            playerHandValue.innerHTML = `<h2 id="pHLabel">Players Hand: ${updateHandvalue("player")}</h2>`
+        })
+        contestants.dealer.cards.forEach(function (card){
+            dealerCardTemplate += `<div class="card ${card.face}"></div>`;
+            dealerHandValue.innerHTML = `<h2 id="dHLabel">Dealers Hand: ${updateHandvalue("dealer")}</h2>`
+        });
+        dealerHand.innerHTML = dealerCardTemplate;
+        playerHand.innerHTML = playerCardTemplate;
+    } 
+}
+
+function updateHandvalue(contestant)
+{
+    //let ace;
+    let sum = 0;
+    // reduce function to get sum of each contestant's hand value
+    if (contestant === "player") {
+        return contestants.player.cards.reduce((sum, current) => {
+            sum += current.value;
+            return sum;
+          }, 0);
+    } else {
+        return contestants.dealer.cards.reduce((sum, current) => {
+            sum += current.value;
+            return sum;
+        }, 0);
+    }
+    updateHandvalue();
+}
+
+function winLogic() {
+
 }
 
 
-function initialDeal(evt) {
-    contestants.dealer.cards.push(shuffledDeck.pop(),shuffledDeck.pop());
-    
-    renderHands();
-}
 
 function drawNextHand(evt) {
-console.log(evt.target);
+    console.log(evt.target);
 }
 
 function stay(evt) {
     console.log(evt.target);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 function buildMasterDeck() {
     const deck = [];
@@ -86,7 +109,7 @@ function buildMasterDeck() {
           // The 'face' property maps to the library's CSS classes for cards
           face: `${suit}${rank}`,
           // Setting the 'value' property for game of blackjack, not war
-          value: Number(rank) || (rank === 'A' ? 11 : 10)
+          value: Number(rank) || (rank === 'A' ? 1 : 10)
         });
       });
     });
