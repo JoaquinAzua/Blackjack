@@ -1,6 +1,7 @@
 /*----- constants -----*/
 const suits = ['s', 'c', 'd', 'h'];
-const ranks = ['02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 'Q', 'K', 'A'];
+//const ranks = ['02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 'Q', 'K', 'A'];
+const ranks = ['02', '03', '04', '05', '06', '07', '08', 'A', 'A', 'A', 'A', 'A', 'A'];
 const masterDeck = buildMasterDeck();
 
 /*----- app's state (variables) -----*/
@@ -29,28 +30,26 @@ let stayButton = document.getElementById("#stay");
 
 /*----- event listeners -----*/
  document.querySelector("#deal").addEventListener('click', initialDeal);
- document.querySelector("#hit").addEventListener('click', addCard);
+ document.querySelector("#hit").addEventListener('click', hit);
  document.querySelector("#stay").addEventListener('click', stay);
- 
- 
- 
+
  /*----- functions -----*/
  init ();
  
  function init() {
-     currentTurn = "player";
+     
      shuffledDeck = getNewShuffledDeck();
      
      contestants = {
          player: {
              cards: [],
              handValue: 0, 
-             playerHasAce = false,
+             playerHasAce: false,
             },
             dealer: {
                 cards: [],
                 handValue: 0,
-                dealerHasAce = false,
+                dealerHasAce: false,
             }
         }
         renderHands();
@@ -59,8 +58,10 @@ function initialDeal(evt) {
 
     contestants.player.cards.push(shuffledDeck.pop(), shuffledDeck.pop());
     contestants.dealer.cards.push(shuffledDeck.pop(), shuffledDeck.pop());
+    hasAce();
     renderHands();
     dealDisable();
+    gameOver();
     }
     
 function dealDisable() {
@@ -104,39 +105,68 @@ function updateHandvalue(contestant) {
     }
 }
 
-function addCard() {
+function hit() {
+    currentTurn = "player";
+
     contestants.player.cards.push(shuffledDeck.pop());
+    hasAce();
+    //updateHandvalue();
+    renderHands();
+    gameOver();
+}
+
+function stay() {
+    currentTurn = "dealer";
+    if (contestants.dealer.handValue < 21 && currentTurn != "player") {
+        contestants.dealer.cards.push(shuffledDeck.pop());
+        if (contestants.dealer.handValue === contestants.player.handValue) {
+            statusEl.innerHTML = `<div id="gSLabel">Game Status: It's a tie!</div>`;
+        } else if (contestants.dealer.handValue > contestants.player.handValue) {
+            statusEl.innerHTML = `<div id="gSLabel">Game Status: Dealer Wins with higher hand!</div>`;
+        } else if (contestants.player.handValue > contestants.dealer.handValue){
+            statusEl.innerHTML = `<div id="gSLabel">Game Status: Player Wins with higher hand!</div>`;
+        }
+    } else if (false) {
+
+    }
+
     renderHands();
 }
 
-function stay(evt) {
-    contestants.dealer.cards.push(shuffledDeck.pop());
-    console.log(evt.target);
-    renderHands();
+
+function gameOver() {
+    if (contestants.dealer.handValue === 21) {
+        statusEl.innerHTML = `<div id="gSLabel">Game Status: Dealer Wins with BlackJack!</div>`;
+    } else if (contestants.player.handValue === 21) {
+        statusEl.innerHTML = `<div id="gSLabel">Game Status: Player Wins with BlackJack!</div>`;
+    } else if (contestants.player.handValue > 21) {
+        statusEl.innerHTML = `<div id="gSLabel">Game Status: Player busted, Dealer Wins!</div>`;
+    } else if (contestants.dealer.handValue > 21) {
+        statusEl.innerHTML = `<div id="gSLabel">Game Status: Dealer Busted, Player Wins!</div>`;
+    } else if (contestants.player.handValue < 21) {
+        currentTurn = "player";
+    } else if (currentTurn) {
+
+    }
 }
 
+function hasAce() {
+    //while (contestants.dealer.handValue <= 21 && contestants.player.handValue <= 21) {
+        // if (contestants.player.cards[0].face.contains("A")) {
+        //     playerHasAce = true;
+        //     playerTotal -= 10;
+        // }  
+    //}
+    if (contestants.player.handValue > 21 && contestants.player.cards.some(card => card.value === 11)) {
+        console.log("has ace")
+        let ace = contestants.player.cards.find(card => card.value === 11);
+        ace.value = 1;
+        let sum = 0;
+        contestants.player.cards.forEach(card => sum += card.value);
+        contestants.player.handValue = sum;
+        renderHands();
+    }
 
-function whoWins() {
-    statusElTemplate = "";
-    if (updateHandvalue("dealer") < 21) {
-        statusElTemplate += `<div id="gSLabel>Game Status: Dealer Wins with BlackJack!</div>`;
-        statusEl.innerHTML = statusElTemplate;
-    } else if (updateHandvalue("player") === 21) {
-        statusEl.innerHTML = `<div id="gSLabel>Game Status: Player Wins with BlackJack!</div>`;
-    } else if (updateHandvalue("player") > 21) {
-        statusEl.innerHTML = `<div id="gSLabel>Game Status: Player busted, Dealer Wins!</div>`;
-    } else if (updateHandvalue("dealer") > 21) {
-        statusEl.innerHTML = `<div id="gSLabel>Game Status: Dealer Busted, Player Wins!</div>`;
-    }
-}
-function aceIsEleven() {
-    while (contestants.dealer.handValue < 21 && contestants.player.handValue < 21) {
-        if (contestants.player.cards[0].face.contains("A") && currentTurn != "dealer") {
-            playerHasAce = true;
-            playerTotal -= 10;
-    }
-       
-    }
 }
 function buildMasterDeck() {
     const deck = [];
@@ -147,7 +177,7 @@ function buildMasterDeck() {
           // The 'face' property maps to the library's CSS classes for cards
           face: `${suit}${rank}`,
           // Setting the 'value' property for game of blackjack, not war
-          value: Number(rank) || (rank === 'A' ? 1 : 10)
+          value: Number(rank) || (rank === 'A' ? 11 : 10)
         });
       });
     });
