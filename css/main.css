@@ -21,7 +21,6 @@ main {
     width: 550px;
     height: 35px;
     margin: auto;
-    background-color: orange;
 } 
 #dealerHand, #playerHand {
     display: flex;
@@ -64,6 +63,7 @@ footer {
     margin: 10px;
     text-transform: uppercase;
 }
+
 
 
 

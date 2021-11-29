@@ -4,102 +4,140 @@ const ranks = ['02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 'Q', '
 const masterDeck = buildMasterDeck();
 
 /*----- app's state (variables) -----*/
-let contestants, shuffledDeck, player, dealer, cards, handValue;
+let contestants,
+shuffledDeck, 
+player, 
+dealer, 
+cards, 
+handValue,
+playerHasAce,
+dealerHasAce,
+currentTurn;
+
 
 /*----- cached element references -----*/
 const playerHandValue = document.getElementById("pHLabel");
 const dealerHandValue = document.getElementById("dHLabel");
 const dealerHand = document.getElementById("dealerHand");
 const playerHand = document.getElementById("playerHand");
-const status = document.getElementById("gSLabel");
+const statusEl = document.getElementById("gSLabel");
+let dealButton = document.getElementById("#deal");
+let hitButton = document.getElementById("#hit");
+let stayButton = document.getElementById("#stay");
+
 
 
 /*----- event listeners -----*/
  document.querySelector("#deal").addEventListener('click', initialDeal);
- document.querySelector("#hit").addEventListener('click', drawNextHand);
- document.querySelector('#stay').addEventListener('click', stay);
-
-/*----- functions -----*/
-init ();
-
-function init() {
-    shuffledDeck = getNewShuffledDeck();
-    contestants = {
-       player: {
-            cards: [],
-            handValue: 0, 
-        },
-        dealer: {
-            cards: [],
-            handValue: 0,
+ document.querySelector("#hit").addEventListener('click', addCard);
+ document.querySelector("#stay").addEventListener('click', stay);
+ 
+ 
+ 
+ /*----- functions -----*/
+ init ();
+ 
+ function init() {
+     currentTurn = "player";
+     shuffledDeck = getNewShuffledDeck();
+     
+     contestants = {
+         player: {
+             cards: [],
+             handValue: 0, 
+             playerHasAce = false,
+            },
+            dealer: {
+                cards: [],
+                handValue: 0,
+                dealerHasAce = false,
+            }
         }
-    }
-
-    renderHands();
-};
+        renderHands();
+    };
 function initialDeal(evt) {
-    
+
     contestants.player.cards.push(shuffledDeck.pop(), shuffledDeck.pop());
     contestants.dealer.cards.push(shuffledDeck.pop(), shuffledDeck.pop());
-
     renderHands();
+    dealDisable();
+    }
     
+function dealDisable() {
+    dealButton = document.querySelector("#deal").setAttribute("disabled", true);
 }
 
 function renderHands() {
+
     let dealerCardTemplate = "";
     let playerCardTemplate = "";
-
-    let dealerSum = contestants.dealer.handValue;
-    let playerSum = contestants.player.handValue;
-
-    if (contestants.dealer.handValue === 0 || contestants.player.handValue ===0 ) {
-        contestants.player.cards.forEach(function (card) {
-            playerCardTemplate += `<div class="card ${card.face}"></div>`;
-            playerHandValue.innerHTML = `<h2 id="pHLabel">Players Hand: ${updateHandvalue("player")}</h2>`
-        })
-        contestants.dealer.cards.forEach(function (card){
-            dealerCardTemplate += `<div class="card ${card.face}"></div>`;
-            dealerHandValue.innerHTML = `<h2 id="dHLabel">Dealers Hand: ${updateHandvalue("dealer")}</h2>`
-        });
-        dealerHand.innerHTML = dealerCardTemplate;
+    
+    contestants.player.cards.forEach(function (card) {
+        playerCardTemplate += `<div class="card ${card.face}"></div>`;
+        playerHandValue.innerHTML = `<h2 id="pHLabel">Players Hand: ${updateHandvalue("player")}</h2>`
         playerHand.innerHTML = playerCardTemplate;
-    } 
+    })
+    contestants.dealer.cards.forEach(function (card){
+        dealerCardTemplate += `<div class="card ${card.face}"></div>`;
+        dealerHandValue.innerHTML = `<h2 id="dHLabel">Dealers Hand: ${updateHandvalue("dealer")}</h2>`
+        dealerHand.innerHTML = dealerCardTemplate;
+    })
 }
 
-function updateHandvalue(contestant)
-{
-    //let ace;
-    let sum = 0;
+function updateHandvalue(contestant) {
+
     // reduce function to get sum of each contestant's hand value
-    if (contestant === "player") {
-        return contestants.player.cards.reduce((sum, current) => {
-            sum += current.value;
-            return sum;
-          }, 0);
-    } else {
-        return contestants.dealer.cards.reduce((sum, current) => {
+    if (contestant === 'player') {
+        let playerTotal = contestants.player.cards.reduce((sum, current) => {
             sum += current.value;
             return sum;
         }, 0);
+        contestants.player.handValue = playerTotal;
+        return playerTotal;
+    } else {
+        let dealerTotal = contestants.dealer.cards.reduce((sum, current) => {
+            sum += current.value;
+            return sum;
+        }, 0);
+        contestants.dealer.handValue = dealerTotal;
+        return dealerTotal;
     }
-    updateHandvalue();
 }
 
-function winLogic() {
-
-}
-
-
-
-function drawNextHand(evt) {
-    console.log(evt.target);
+function addCard() {
+    contestants.player.cards.push(shuffledDeck.pop());
+    renderHands();
 }
 
 function stay(evt) {
+    contestants.dealer.cards.push(shuffledDeck.pop());
     console.log(evt.target);
+    renderHands();
 }
 
+
+function whoWins() {
+    statusElTemplate = "";
+    if (updateHandvalue("dealer") < 21) {
+        statusElTemplate += `<div id="gSLabel>Game Status: Dealer Wins with BlackJack!</div>`;
+        statusEl.innerHTML = statusElTemplate;
+    } else if (updateHandvalue("player") === 21) {
+        statusEl.innerHTML = `<div id="gSLabel>Game Status: Player Wins with BlackJack!</div>`;
+    } else if (updateHandvalue("player") > 21) {
+        statusEl.innerHTML = `<div id="gSLabel>Game Status: Player busted, Dealer Wins!</div>`;
+    } else if (updateHandvalue("dealer") > 21) {
+        statusEl.innerHTML = `<div id="gSLabel>Game Status: Dealer Busted, Player Wins!</div>`;
+    }
+}
+function aceIsEleven() {
+    while (contestants.dealer.handValue < 21 && contestants.player.handValue < 21) {
+        if (contestants.player.cards[0].face.contains("A") && currentTurn != "dealer") {
+            playerHasAce = true;
+            playerTotal -= 10;
+    }
+       
+    }
+}
 function buildMasterDeck() {
     const deck = [];
     // Use nested forEach to generate card objects
