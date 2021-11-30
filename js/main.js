@@ -26,7 +26,7 @@ let stayButton = document.getElementById("#stay");
  document.querySelector("#deal").addEventListener('click', initialDeal);
  document.querySelector("#hit").addEventListener('click', hit);
  document.querySelector("#stay").addEventListener('click', stay);
- document.querySelector("#reset").addEventListener('click', resetGame)
+ document.querySelector("#reset").addEventListener('click', init());
 
  /*----- functions -----*/
  init ();
@@ -48,13 +48,12 @@ let stayButton = document.getElementById("#stay");
                 handValue: 0,
             }
         }
-    resetGame();
     renderHands();
 }
 function resetGame() {
     
     dealButton = document.querySelector("#deal").removeAttribute("disabled", true);
-    hitButton = document.querySelector("#hit").removeAttribute("disabled", true);
+    
     stayButton = document.querySelector("#stay").removeAttribute("disabled", true);
 
 }
@@ -73,8 +72,10 @@ function initialDeal() {
 
     if (contestants.dealer.handValue === 21) {
         statusEl.innerHTML = `<div id="gSLabel">Game Status: Dealer Wins!</div>`;
+        hitButton = document.querySelector("#hit").setAttribute("disabled", true);
     } else if (contestants.player.handValue === 21){
         statusEl.innerHTML = `<div id="gSLabel">Game Status: Player Wins!</div>`;
+        hitButton = document.querySelector("#hit").setAttribute("disabled", true);
     };
 
     renderHands();
@@ -141,8 +142,10 @@ function stay() {
     updateHandvalue();
     if (contestants.player.handValue > contestants.dealer.handValue){
         statusEl.innerHTML = `<div id="gSLabel">Game Status: player Wins with higher hand!</div>`;
+        hitButton = document.querySelector("#hit").setAttribute("disabled", true);
     } else if(contestants.dealer.handValue > contestants.player.handValue) {
         statusEl.innerHTML = `<div id="gSLabel">Game Status: Dealer Wins with higher hand!</div>`;
+        hitButton = document.querySelector("#hit").setAttribute("disabled", true);
     }
     renderHands();
     gameOver();
@@ -165,13 +168,7 @@ function gameOver() {
         hitButton = document.querySelector("#hit").setAttribute("disabled", true);
         stayButton = document.querySelector("#stay").setAttribute("disabled", true);
 
-     } //else if(contestants.dealer.handValue > contestants.player.handValue) {
-    //     statusEl.innerHTML = `<div id="gSLabel">Game Status: Dealer Wins with higher hand!</div>`;
-
-    // } //else if (contestants.player.handValue > contestants.dealer.handValue){
-        //statusEl.innerHTML = `<div id="gSLabel">Game Status: player Wins with higher hand!</div>`;
-
-    //}
+    };
 }
 
 function hasAce() {
