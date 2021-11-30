@@ -2,6 +2,8 @@
 ----------
 ## **Simple BlackJack Gameplay**
 ##### First contestant to reach 21 wins *BlackJack*
+##### Hit button controls player choices
+##### Stay button controls dealer choices
 ##### If both contestants stay then higher hand value is winner
 ##### Game ends with a tie 
 

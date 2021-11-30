@@ -47,7 +47,6 @@ function init() {
     }
     hitButton = document.querySelector("#hit").setAttribute("disabled", true);
     stayButton = document.querySelector("#stay").setAttribute("disabled", true);
-    //initialDeal();
     
     resetGame();
     renderHands();
@@ -55,7 +54,16 @@ function init() {
 
 function resetGame() {
 
-    statusEl.innerHTML = `<div id="gSLabel">Game Status: </div>`;
+    let resetPlayerHand = document.getElementById("playerHand");
+    let resetDealerHand = document.getElementById("dealerHand");
+    let resetDealerLabel = document.getElementById("dHLabel");
+    let resetPlayerLabel = document.getElementById("pHLabel");
+    resetPlayerLabel.textContent = "Players Hand:";
+    resetDealerLabel.textContent = "Dealers Hand:";
+    resetPlayerHand.textContent = "";
+    resetDealerHand.textContent = "";
+
+    statusEl.textContent = `Game Status:`;
     dealButton = document.querySelector("#deal").removeAttribute("disabled", true);
 
 }
@@ -68,7 +76,6 @@ function initialDeal() {
     hitButton = document.querySelector("#hit").removeAttribute("disabled", true);
     stayButton = document.querySelector("#stay").removeAttribute("disabled", true);
 
-    hasAce();
     updateHandvalue('player');
     updateHandvalue('dealer');
 
@@ -145,7 +152,6 @@ function hit() {
         statusEl.innerHTML = `<div id="gSLabel">Game Status: Player Wins!</div>`;
     } else if (contestants.player.handValue < 21) {
         contestants.player.cards.push(shuffledDeck.pop());
-        hasAce();
     }
     renderHands();
     gameOver();
@@ -188,24 +194,6 @@ function gameOver() {
     };
 }
 
-function hasAce() {
-    //while (contestants.dealer.handValue <= 21 && contestants.player.handValue <= 21) {
-    // if (contestants.player.cards[0].face.contains("A")) {
-    //     playerHasAce = true;
-    //     playerTotal -= 10;
-    // }  
-    //}
-    if (contestants.player.handValue > 21 && contestants.player.cards.some(card => card.value === 11)) {
-        console.log("has ace")
-        let ace = contestants.player.cards.find(card => card.value === 11);
-        ace.value = 1;
-        let sum = 0;
-        contestants.player.cards.forEach(card => sum += card.value);
-        contestants.player.handValue = sum;
-        renderHands();
-    }
-
-}
 function buildMasterDeck() {
     const deck = [];
     // Use nested forEach to generate card objects
