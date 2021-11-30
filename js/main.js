@@ -1,7 +1,7 @@
 /*----- constants -----*/
 const suits = ['s', 'c', 'd', 'h'];
-//const ranks = ['02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 'Q', 'K', 'A'];
-const ranks = ['02', '03', '04', '05', '06', '07', '08', 'A', 'A', 'A', 'A', 'A', 'A'];
+const ranks = ['02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 'Q', 'K', 'A'];
+//const ranks = ['02', '03', '04', '05', '06', '07', '08', '10', '10', '10', 'A', 'A', 'A'];
 const masterDeck = buildMasterDeck();
 
 /*----- app's state (variables) -----*/
@@ -10,11 +10,7 @@ shuffledDeck,
 player, 
 dealer, 
 cards, 
-handValue,
-playerHasAce,
-dealerHasAce,
-currentTurn;
-
+handValue;
 
 /*----- cached element references -----*/
 const playerHandValue = document.getElementById("pHLabel");
@@ -26,50 +22,67 @@ let dealButton = document.getElementById("#deal");
 let hitButton = document.getElementById("#hit");
 let stayButton = document.getElementById("#stay");
 
-
-
 /*----- event listeners -----*/
  document.querySelector("#deal").addEventListener('click', initialDeal);
  document.querySelector("#hit").addEventListener('click', hit);
  document.querySelector("#stay").addEventListener('click', stay);
+ document.querySelector("#reset").addEventListener('click', resetGame)
 
  /*----- functions -----*/
  init ();
  
+ // initialize contestans cards and handValue and shuffledeck and disables hit/stay buttons till inital deal 
  function init() {
-     
+
      shuffledDeck = getNewShuffledDeck();
+     hitButton = document.querySelector("#hit").setAttribute("disabled", true);
+     stayButton = document.querySelector("#stay").setAttribute("disabled", true);
      
      contestants = {
          player: {
              cards: [],
              handValue: 0, 
-             playerHasAce: false,
             },
             dealer: {
                 cards: [],
                 handValue: 0,
-                dealerHasAce: false,
             }
         }
-        renderHands();
-    };
-function initialDeal(evt) {
+    resetGame();
+    renderHands();
+}
+function resetGame() {
+    
+    dealButton = document.querySelector("#deal").removeAttribute("disabled", true);
+    hitButton = document.querySelector("#hit").removeAttribute("disabled", true);
+    stayButton = document.querySelector("#stay").removeAttribute("disabled", true);
+
+}
+
+function initialDeal() {
 
     contestants.player.cards.push(shuffledDeck.pop(), shuffledDeck.pop());
     contestants.dealer.cards.push(shuffledDeck.pop(), shuffledDeck.pop());
-    hasAce();
-    renderHands();
-    dealDisable();
-    gameOver();
-    }
-    
-function dealDisable() {
     dealButton = document.querySelector("#deal").setAttribute("disabled", true);
+    hitButton = document.querySelector("#hit").removeAttribute("disabled", true);
+    stayButton = document.querySelector("#stay").removeAttribute("disabled", true);
+
+    hasAce();
+    updateHandvalue('player');
+    updateHandvalue('dealer');
+
+    if (contestants.dealer.handValue === 21) {
+        statusEl.innerHTML = `<div id="gSLabel">Game Status: Dealer Wins!</div>`;
+    } else if (contestants.player.handValue === 21){
+        statusEl.innerHTML = `<div id="gSLabel">Game Status: Player Wins!</div>`;
+    };
+
+    renderHands();
+    gameOver();
 }
-
+    
 function renderHands() {
-
+    // renders any hands either in initial deal or added through hit/stay to containers
     let dealerCardTemplate = "";
     let playerCardTemplate = "";
     
@@ -77,22 +90,23 @@ function renderHands() {
         playerCardTemplate += `<div class="card ${card.face}"></div>`;
         playerHandValue.innerHTML = `<h2 id="pHLabel">Players Hand: ${updateHandvalue("player")}</h2>`
         playerHand.innerHTML = playerCardTemplate;
-    })
+    });
     contestants.dealer.cards.forEach(function (card){
         dealerCardTemplate += `<div class="card ${card.face}"></div>`;
         dealerHandValue.innerHTML = `<h2 id="dHLabel">Dealers Hand: ${updateHandvalue("dealer")}</h2>`
         dealerHand.innerHTML = dealerCardTemplate;
-    })
+    });
 }
 
 function updateHandvalue(contestant) {
-
+    
     // reduce function to get sum of each contestant's hand value
     if (contestant === 'player') {
         let playerTotal = contestants.player.cards.reduce((sum, current) => {
             sum += current.value;
             return sum;
         }, 0);
+        // assigning the updated hand value to the variable 
         contestants.player.handValue = playerTotal;
         return playerTotal;
     } else {
@@ -100,54 +114,64 @@ function updateHandvalue(contestant) {
             sum += current.value;
             return sum;
         }, 0);
+        // assigning the updated hand value to the variable 
         contestants.dealer.handValue = dealerTotal;
         return dealerTotal;
     }
 }
 
 function hit() {
-    currentTurn = "player";
-
-    contestants.player.cards.push(shuffledDeck.pop());
-    hasAce();
-    //updateHandvalue();
+    updateHandvalue("player");
+        if (contestants.dealer.handValue === 21) {
+            statusEl.innerHTML = `<div id="gSLabel">Game Status: Dealer Wins!</div>`;
+        } else if (contestants.player.handValue === 21){
+            statusEl.innerHTML = `<div id="gSLabel">Game Status: Player Wins!</div>`;
+        } else if (contestants.player.handValue < 21) {
+        contestants.player.cards.push(shuffledDeck.pop());
+        hasAce();
+    }
     renderHands();
     gameOver();
 }
-
+// contestants.dealer.handValue < contestants.player.handValue
 function stay() {
-    currentTurn = "dealer";
-    if (contestants.dealer.handValue < 21 && currentTurn != "player") {
+    if (contestants.dealer.handValue < 16) {
         contestants.dealer.cards.push(shuffledDeck.pop());
-        if (contestants.dealer.handValue === contestants.player.handValue) {
-            statusEl.innerHTML = `<div id="gSLabel">Game Status: It's a tie!</div>`;
-        } else if (contestants.dealer.handValue > contestants.player.handValue) {
-            statusEl.innerHTML = `<div id="gSLabel">Game Status: Dealer Wins with higher hand!</div>`;
-        } else if (contestants.player.handValue > contestants.dealer.handValue){
-            statusEl.innerHTML = `<div id="gSLabel">Game Status: Player Wins with higher hand!</div>`;
-        }
-    } else if (false) {
-
     }
-
+    updateHandvalue();
+    if (contestants.player.handValue > contestants.dealer.handValue){
+        statusEl.innerHTML = `<div id="gSLabel">Game Status: player Wins with higher hand!</div>`;
+    } else if(contestants.dealer.handValue > contestants.player.handValue) {
+        statusEl.innerHTML = `<div id="gSLabel">Game Status: Dealer Wins with higher hand!</div>`;
+    }
     renderHands();
-}
-
+    gameOver();
+} 
 
 function gameOver() {
-    if (contestants.dealer.handValue === 21) {
-        statusEl.innerHTML = `<div id="gSLabel">Game Status: Dealer Wins with BlackJack!</div>`;
-    } else if (contestants.player.handValue === 21) {
-        statusEl.innerHTML = `<div id="gSLabel">Game Status: Player Wins with BlackJack!</div>`;
+
+    if (contestants.dealer.handValue < 21 &&  contestants.dealer.handValue === contestants.player.handValue) {
+        statusEl.innerHTML = `<div id="gSLabel">Game Status: It's a tie!</div>`;
+        // hitButton = document.querySelector("#hit").setAttribute("disabled", true);
+        stayButton = document.querySelector("#stay").setAttribute("disabled", true);
+
     } else if (contestants.player.handValue > 21) {
         statusEl.innerHTML = `<div id="gSLabel">Game Status: Player busted, Dealer Wins!</div>`;
+        hitButton = document.querySelector("#hit").setAttribute("disabled", true);
+        stayButton = document.querySelector("#stay").setAttribute("disabled", true);
+
     } else if (contestants.dealer.handValue > 21) {
         statusEl.innerHTML = `<div id="gSLabel">Game Status: Dealer Busted, Player Wins!</div>`;
-    } else if (contestants.player.handValue < 21) {
-        currentTurn = "player";
-    } else if (currentTurn) {
+        hitButton = document.querySelector("#hit").setAttribute("disabled", true);
+        stayButton = document.querySelector("#stay").setAttribute("disabled", true);
 
-    }
+     } //else if(contestants.dealer.handValue > contestants.player.handValue) {
+    //     statusEl.innerHTML = `<div id="gSLabel">Game Status: Dealer Wins with higher hand!</div>`;
+
+    // } //else if (contestants.player.handValue > contestants.dealer.handValue){
+        //statusEl.innerHTML = `<div id="gSLabel">Game Status: player Wins with higher hand!</div>`;
+
+    //}
 }
 
 function hasAce() {
