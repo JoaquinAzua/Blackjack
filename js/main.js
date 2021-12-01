@@ -160,7 +160,6 @@ function hit() {
     gameOver();
 }
 
-// 
 function stay() {
     if (contestants.dealer.handValue < 21) {
         contestants.dealer.cards.push(shuffledDeck.pop());
