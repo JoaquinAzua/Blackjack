@@ -1,7 +1,6 @@
 /*----- constants -----*/
 const suits = ['s', 'c', 'd', 'h'];
 const ranks = ['02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 'Q', 'K', 'A'];
-// const ranks = ['02', '03', '04', '05', '06', '07', '08', '10', '10', '10', 'A', 'A', 'A'];
 const masterDeck = buildMasterDeck();
 
 /*----- app's state (variables) -----*/
@@ -21,6 +20,10 @@ const statusEl = document.getElementById("gSLabel");
 let dealButton = document.getElementById("#deal");
 let hitButton = document.getElementById("#hit");
 let stayButton = document.getElementById("#stay");
+let resetPlayerHand = document.getElementById("playerHand");
+let resetDealerHand = document.getElementById("dealerHand");
+let resetDealerLabel = document.getElementById("dHLabel");
+let resetPlayerLabel = document.getElementById("pHLabel");
 
 /*----- event listeners -----*/
 document.querySelector("#deal").addEventListener('click', initialDeal);
@@ -54,10 +57,6 @@ function init() {
 
 function resetGame() {
 
-    let resetPlayerHand = document.getElementById("playerHand");
-    let resetDealerHand = document.getElementById("dealerHand");
-    let resetDealerLabel = document.getElementById("dHLabel");
-    let resetPlayerLabel = document.getElementById("pHLabel");
     resetPlayerLabel.textContent = "Players Hand:";
     resetDealerLabel.textContent = "Dealers Hand:";
     resetPlayerHand.textContent = "";
@@ -65,9 +64,9 @@ function resetGame() {
 
     statusEl.textContent = `Game Status:`;
     dealButton = document.querySelector("#deal").removeAttribute("disabled", true);
-
 }
 
+// handles first deal to each player and disables deal button enabling hit/stay 
 function initialDeal() {
 
     contestants.player.cards.push(shuffledDeck.pop(), shuffledDeck.pop());
@@ -93,8 +92,8 @@ function initialDeal() {
     gameOver();
 }
 
+// renders any hands either in initial deal or added through hit/stay to containers
 function renderHands() {
-    // renders any hands either in initial deal or added through hit/stay to containers
     let dealerCardTemplate = "";
     let playerCardTemplate = "";
 
@@ -109,15 +108,18 @@ function renderHands() {
         dealerHand.innerHTML = dealerCardTemplate;
     });
 }
+
+
 function updateHandvalue(contestant) {
-    // reduce function to get sum of each contestant's hand value
     if (contestant === 'player') {
+        // reduce function to get sum of each contestant's hand value
         let playerTotal = contestants.player.cards.reduce((sum, current) => {
             sum += current.value;
             return sum;
         }, 0);
-        // assigning the updated hand value to the variable 
+        // assign the updated hand value to the variable 
         contestants.player.handValue = playerTotal;
+        // adjust ace values based
         if (contestants.player.handValue > 21 && contestants.player.cards.some(card => card.value === 11)) {
           let ace = contestants.player.cards.find(card => card.value === 11);
           ace.value = 1;
@@ -131,7 +133,7 @@ function updateHandvalue(contestant) {
             sum += current.value;
             return sum;
         }, 0);
-        // assigning the updated hand value to the variable 
+        // assign the updated hand value to the variable 
         contestants.dealer.handValue = dealerTotal;
         if (contestants.dealer.handValue > 21 && contestants.dealer.cards.some(card => card.value === 11)) {
           let ace = contestants.dealer.cards.find(card => card.value === 11);
@@ -144,6 +146,7 @@ function updateHandvalue(contestant) {
     }
 }
 
+// checks to see if either contestant has 21 after first deal then allows player to add cards to hand
 function hit() {
     updateHandvalue("player");
     if (contestants.dealer.handValue === 21) {
@@ -157,13 +160,13 @@ function hit() {
     gameOver();
 }
 
-// contestants.dealer.handValue < contestants.player.handValue
+// 
 function stay() {
-    if (contestants.dealer.handValue < 18) {
+    if (contestants.dealer.handValue < 21) {
         contestants.dealer.cards.push(shuffledDeck.pop());
     }
     updateHandvalue();
-    if (contestants.player.handValue > contestants.dealer.handValue && contestants.dealer.handValue >=18) {
+    if (contestants.player.handValue > contestants.dealer.handValue && contestants.dealer.handValue >21) {
         statusEl.innerHTML = `<div id="gSLabel">Game Status: player Wins with higher hand!</div>`;
         hitButton = document.querySelector("#hit").setAttribute("disabled", true);
     } else if (contestants.dealer.handValue > contestants.player.handValue) {
@@ -178,7 +181,6 @@ function gameOver() {
 
     if (contestants.dealer.handValue < 21 && contestants.dealer.handValue === contestants.player.handValue) {
         statusEl.innerHTML = `<div id="gSLabel">Game Status: It's a tie!</div>`;
-        // hitButton = document.querySelector("#hit").setAttribute("disabled", true);
         stayButton = document.querySelector("#stay").setAttribute("disabled", true);
 
     } else if (contestants.player.handValue > 21) {

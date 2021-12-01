@@ -66,12 +66,12 @@ footer {
     text-transform: uppercase;
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 375px) {
     #table, #gSLabel{
-        width: 80vh;
+        width: 55vh;
     }
     #dealerHand, #playerHand, #dHLabel, #pHLabel {
-        width: 60vh;
+        width: 45vh;
     }
     #hitStay button{
         width: 10vh;
