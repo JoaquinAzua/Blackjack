@@ -66,65 +66,14 @@ footer {
     text-transform: uppercase;
 }
 
-@media (max-width: 400px) {
-    body {
-        background-color: #53AE8D;
+@media screen and (max-width: 480px) {
+    #table, #gSLabel{
         width: 80vh;
     }
-    h1 {
-        text-align: center;
+    #dealerHand, #playerHand, #dHLabel, #pHLabel {
+        width: 60vh;
     }
-    main {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-    
-    #table {
-        margin: auto;
-        height: 300px;
-        width: 300px;
-        border-radius: 40px;
-    }
-    #gSLabel {
-        color:firebrick;
-        text-transform: uppercase;
-        width: 80vh;
-        height: 35vh;
-        margin: auto;
-    } 
-    #dealerHand, #playerHand {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 80vh;
-        height: 160px;
-        margin: 5px;
-        background-color: beige;
-        
-    }
-    #dHLabel, #pHLabel {
-        display: block;
-        /* background-color: blue; */
-        color:firebrick;
-        text-transform: uppercase;
-        text-align: left;
-        width: 80vh;
-        margin: 5px;
-    }
-    #gameStatus {
-        background-color: lightblue;
-        width: 80vh;
-        height: 60px;
-        margin: auto;
-    }
-    
     #hitStay button{
-        width: 40px;
-        height: 15px;
-        margin: 10px;
-        text-transform: uppercase;
+        width: 10vh;
     }
-    
-}
+}   
