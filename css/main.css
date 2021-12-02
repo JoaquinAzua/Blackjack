@@ -56,14 +56,20 @@ main {
     text-transform: uppercase;
 }
 
-@media screen and (max-width: 375px) {
+@media only screen and (min-device-width: 375px)
+ and (max-device-width: 812px)
+  and (-webkit-min-device-pixel-ratio: 3) {
+      main {
+          width: 50vh;
+      }
     #table, #gSLabel{
-        width: 55vh;
+        width: 40vh;
     }
     #dealerHand, #playerHand, #dHLabel, #pHLabel {
-        width: 45vh;
+        width: 40vh;
     }
     #hitStay button{
-        width: 10vh;
+        width: 8vh;
     }
 }   
+
