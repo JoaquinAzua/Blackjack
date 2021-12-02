@@ -161,7 +161,7 @@ function hit() {
 }
 
 function stay() {
-    if (contestants.dealer.handValue < 21) {
+    if (contestants.dealer.handValue < 19) {
         contestants.dealer.cards.push(shuffledDeck.pop());
     }
     updateHandvalue();
